@@ -1,3 +1,16 @@
+---
+title: "HW2-exploration"
+author: "Haejin Kim"
+date: 2024-02-03
+toc: true
+format: html
+editor_options: 
+  chunk_output_type: console
+output: 
+  html_document: 
+    theme: cerulean
+---
+
 ## data wrangling
 
 ```{r}
@@ -57,10 +70,10 @@ car %>%
 
 # see the volume of the car and truck production
 car %>%
-  filter(manufacturer != "All", regulatory_class != "All") %>%
-  ggplot(aes(x = model_year, y = real_world_mpg, color = regulatory_class)) +
+  filter(manufacturer != "All", vehicle_type != "All" & vehicle_type != "All Car" & vehicle_type != "All Truck") %>%
+  ggplot(aes(x = model_year, y = real_world_mpg, color = vehicle_type)) +
   geom_col() + 
-  labs(title = "Real World MPG Over Model Years", x = "Model Year", y = "Real World MPG", color = "Manufacturer") +
+  labs(title = "Real World MPG Over Model Years", x = "Model Year", y = "Real World MPG", color = "Vehicle Type") +
   theme_minimal()
 
 ```
