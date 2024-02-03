@@ -1,4 +1,4 @@
-## data wrangling  
+## data wrangling
 
 ```{r}
 ## load package ----
@@ -65,7 +65,7 @@ car %>%
 
 ```
 
-## Part II 
+## Part II
 
 **1.** What have you learned about your data? Have any potentially interesting patterns emerged? **(5-8 sentences)**
 
