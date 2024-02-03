@@ -1,0 +1,84 @@
+## data wrangling 
+
+```{r}
+## load package ----
+library(dplyr) # to manipulation and transform the data
+library(tidyverse) # visualization and data analysis
+library(ggplot2) # focus to map aesthetic
+
+## Import data ----
+car_data <- read.csv("/Volumes/HAEJIN_KIM/UCSB/eds240_data-viz/Kim-eds240-HW4/data/export_data_by_manufactuer.csv")
+
+## clean data as lower cases ----
+car <- janitor::clean_names(car_data) %>% 
+  filter(model_year != "Prelim. 2022") %>%
+  mutate_at(vars(-manufacturer, -regulatory_class, -vehicle_type), as.numeric)
+
+```
+
+## Three exploratory Visualizations
+
+```{r}
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                                  plot #1                                 ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# create boxplot of production share and mpg
+# exclude Tesla car due to using different mpg 
+car %>%
+  filter(manufacturer != "All" & manufacturer != "Tesla") %>% # exclude All for duplicate and tesla
+  filter(regulatory_class == "Car") %>% # sort only car 
+  ggplot(aes(x = production_share, y = real_world_mpg, fill = manufacturer)) +
+  geom_boxplot() 
+
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                                  plot #2                                 ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+# scatter plot of weight vs. horsepower and sort only car section
+car %>%
+  filter(manufacturer != "All") %>% # exclude manufacturer "All" due to duplicate 
+  filter(regulatory_class == "Car") %>% # sort only car 
+  ggplot(aes(x = weight_lbs, y = horsepower_hp, color = manufacturer)) +
+  geom_point() +
+  labs(title = "Weight vs. Horsepower", x = "Weight (lbs)", y = "Horsepower (hp)", color = "Manufacturer") +
+  theme_minimal()
+  
+
+  
+
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                                  plot #3                                 ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# see the volume of the car and truck production
+car %>%
+  filter(manufacturer != "All", regulatory_class != "All") %>%
+  ggplot(aes(x = model_year, y = real_world_mpg, color = regulatory_class)) +
+  geom_col() + 
+  labs(title = "Real World MPG Over Model Years", x = "Model Year", y = "Real World MPG", color = "Manufacturer") +
+  theme_minimal()
+
+```
+
+## Part II 
+
+**1.** What have you learned about your data? Have any potentially interesting patterns emerged? **(5-8 sentences)**
+
+**Answer:** Upon analyzing the data, several intriguing patterns have emerged. Primarily, there are distinct trends discernible among different manufacturers, showcasing variations in production levels, real-world MPG, and horsepower. Despite the luxury branding of certain manufacturers, there appears to be a lack of significant technological advancements reflected in the data. An interesting observation pertains to Tesla vehicles, which exhibit a unique relationship between weight and horsepower due to their electric vehicle nature. This highlights the distinct characteristics and impact of electric vehicle technology on traditional automotive metrics. Additionally, the data hints at potential areas for further exploration, such as understanding the factors driving these variations and assessing the implications for the automotive industry as a whole.
+
+**2.** In HW #1, you outlined some questions that you wanted to answer using these data. Have you made any strides towards answering those questions? If yes, how so? If no, what next steps do you need to take (e.g. I need to create X plot type, I still need to track down Y data, I need to restructure existing data so that you can visualize it in Z ways, etc.)? **(8-12 sentences)**
+
+**Answer:** The analysis of the dataset has led to the creation of three distinct plots, each aimed at exploring different aspects of the automotive industry trends.The first plot, a boxplot of production share and MPG, focuses on understanding the distribution and potential outliers across manufacturers, excluding "All" and "Tesla" to provide more meaningful insights. This visualization offers a glimpse into how production share relates to real-world MPG, highlighting potential patterns or disparities among manufacturers.
+
+Moving to the second plot, a scatter plot of weight versus horsepower consider only car regulatory class data. By examining the relationship between weight and horsepower across these brands, the plot sheds light on the performance characteristics of vehicles from different manufacturers. Lastly, the third plot attempts to depict real-world MPG trends over model years through a line plot. While filtering out data for "All" manufacturers and regulatory class "All," the choice of using geom_col() for a line plot may need reconsideration for better representation of trends over time.
+
+Looking ahead, there are several avenues for further analysis and refinement. This includes exploring statistical methods like regression modeling to quantify relationships and identify significant predictors. Additionally, delving deeper into anomalies or unexpected patterns in the data could provide valuable insights into industry dynamics. Incorporating additional variables or datasets could enrich the analysis and offer a more comprehensive understanding of automotive trends and behaviors. Continued exploration and refinement of analysis methods will be key to addressing the original questions and extracting meaningful insights from the dataset.
+
+**3.** What challenges do you foresee encountering with your data? These can be data wrangling and / or visualization challenges. **(4-6 sentences)**
+
+**Answer:** Some challenges I foresee with the data include data cleaning and wrangling issues, particularly dealing with missing values, inconsistencies, and outliers. Ensuring data integrity and accuracy will require careful examination and potentially complex transformations. Additionally, visualizing the data effectively to convey meaningful insights may pose challenges, especially when dealing with large datasets or complex relationships among variables. Selecting appropriate visualization techniques and ensuring clarity and interpretability will be essential. Furthermore, integrating multiple datasets or sources to enrich the analysis may introduce compatibility and integration challenges that need to be addressed. Overall, navigating these challenges will require attention to detail, thoughtful planning, and iterative refinement of analysis approaches.
