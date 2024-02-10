@@ -3,7 +3,9 @@ title: "HW2-exploration"
 author: "Haejin Kim"
 date: 2024-02-03
 toc: true
-format: html
+format:
+  html:
+    embed-resources: true
 editor_options: 
   chunk_output_type: console
 output: 
@@ -40,7 +42,7 @@ car <- janitor::clean_names(car_data) %>%
 # create boxplot of production share and mpg
 # exclude Tesla car due to using different mpg 
 car %>%
-  filter(manufacturer != "All" & manufacturer != "Tesla") %>% # exclude All for duplicate and tesla
+  filter(manufacturer != "All" & manufacturer != "Tesla") %>% # exclude All for duplicate and Tesla because it is EV 
   filter(regulatory_class == "Car") %>% # sort only car 
   ggplot(aes(x = production_share, y = real_world_mpg, fill = manufacturer)) +
   geom_boxplot() 
